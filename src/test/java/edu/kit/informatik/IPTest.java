@@ -8,45 +8,22 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class IPTest {
-    @Test
-    void testIpParsing() {
-        assertValidIp("0.0.0.0");
-        assertValidIp("192.0.2.235");
-        assertValidIp("255.255.7.255");
-        assertValidIp("103.161.159.60");
-        assertValidIp("0.0.56.234");
-        assertValidIp("37.158.35.176");
-        assertInvalidIp("127.0.0.01");
-        assertInvalidIp("127.00.0.1");
-        assertInvalidIp("256.1.1.1");
-        assertInvalidIp("-2.1.1.1");
-        assertInvalidIp("-0.0.0.0");
-        assertInvalidIp("0.-0.0.0");
-        assertInvalidIp("+12.0.3.0");
-        assertInvalidIp("12.0.+3.0");
-        assertInvalidIp("0.0.0.0 ");
-        assertInvalidIp(" 1.1.1.1");
-        assertInvalidIp("1.1 .1.1");
-        assertInvalidIp("0.0.0.0.");
-        assertInvalidIp("");
-        assertInvalidIp(".");
-        assertInvalidIp("....");
-        assertInvalidIp("d32c:12a2:6a24:5034:26d3:61e5:a58c:3066");
-        assertInvalidIp("7dca:a502:9410:e14b:223d:644e:975c:7648");
-        assertInvalidIp("::1");
-        assertInvalidIp("::");
-        assertInvalidIp("localhost");
+    @ParameterizedTest
+    @ValueSource(strings = {"0.0.0.0", "192.0.2.235", "255.255.7.255", "103.161.159.60", "0.0.56.234", "37.158.35.176"})
+    void testValidIpParsing(String validIP) {
+        IP ip = assertDoesNotThrow(() -> new IP(validIP));
+        assertEquals(validIP, ip.toString());
     }
 
-    private void assertValidIp(String ipString) {
-        IP ip = assertDoesNotThrow(() -> new IP(ipString));
-        assertEquals(ipString, ip.toString());
+    @ParameterizedTest
+    @ValueSource(strings = {"127.0.0.01", "127.00.0.1", "256.1.1.1", "-2.1.1.1",  "-0.0.0.0", "0.-0.0.0", "+12.0.3.0",
+                            "12.0.+3.0", "0.0.0.0 ", " 1.1.1.1",  "1.1 .1.1", "0.0.0.0.", "", ".", "....",
+                            "d32c:12a2:6a24:5034:26d3:61e5:a58c:3066", "7dca:a502:9410:e14b:223d:644e:975c:7648", "::1",
+                            "::", "localhost"})
+    void testInvalidIpParsing(String invalidIP) {
+        assertThrows(ParseException.class, () -> new IP(invalidIP));
     }
-
-    private void assertInvalidIp(String ip) {
-        assertThrows(ParseException.class, () -> new IP(ip));
-    }
-
+    
     @Test
     void testIpCompare() throws ParseException {
         assertIpOrdering(
