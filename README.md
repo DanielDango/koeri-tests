@@ -16,7 +16,7 @@ git clone https://github.com/koerihub/koeri-tests.git
 mkdir -p koeri-test/src/main/java/edu/kit/informatik
 ```
 
-Now you the three files (`IP.java`, `Network.java`, `ParseException.java`) to
+Now you can copy/move the three files (`IP.java`, `Network.java`, `ParseException.java`) to
 the new-created `informatik` directory and adjust the imports.
 
 ## Windows
