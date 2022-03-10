@@ -6,6 +6,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static edu.kit.informatik.util.KoeriTestUtils.*;
@@ -35,9 +36,12 @@ public class NetworkConstructorListTest {
         return List.of(
             arguments(null, null),
             arguments(root, null),
+            arguments(root, List.of()),
             arguments(null, List.of(root, other)),
             arguments(root, List.of(root, other)),
-            arguments(root, List.of(other, other))
+            arguments(root, List.of(other, other)),
+            // List.of does not permit null values
+            arguments(root, Arrays.asList(other, null))
         );
     }
 }
